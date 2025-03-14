@@ -1,0 +1,17 @@
+#SPDX-License-Identifier: MIT-0
+---
+# vars file for sonarQube-setup
+sonarqube_install_dir: "/opt/sonarqube-{{ sonarqube_version }}"
+sonarqube_service_name: "sonarqube"
+sonarqube_download_url: "https://binaries.sonarsource.com/Distribution/sonarqube/sonarqube-{{ sonarqube_version }}.zip"
+sysctl_config:
+      - "vm.max_map_count=262144"
+      - "fs.file-max=65536"
+      - "ulimit -n 65536"
+      - "ulimit -u 4096"
+required_packages:
+      - openjdk-{{ jdk_version }}-jdk
+      - postgresql
+      - postgresql-contrib
+      - python3-psycopg2
+      - zip

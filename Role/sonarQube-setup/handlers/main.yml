@@ -1,0 +1,12 @@
+#SPDX-License-Identifier: MIT-0
+---
+# handlers file for sonarQube-setup
+- name: Reload systemd
+  systemd:
+    daemon_reload: yes
+
+- name: Restart SonarQube
+  systemd:
+    name: "{{ sonarqube_service_name }}"
+    state: restarted
+    enabled: yes

@@ -1,0 +1,12 @@
+#SPDX-License-Identifier: MIT-0
+---
+# tasks file for sonarQube-setup
+- name: install all dependence
+  include_tasks: dependence.yml
+  when: ansible_facts['os_family'] == 'Debian'
+- name: postgresql User & Database operation
+  include_tasks: db_operation
+  when: ansible_facts['os_family'] == 'Debian'
+- name: Install SonarQube
+  include_tasks: sonarqube.yml
+  when: ansible_facts['os_family'] == 'Debian'

@@ -1,0 +1,12 @@
+#SPDX-License-Identifier: MIT-0
+---
+# defaults file for sonarQube-setup
+postgresql_version: "16"
+jdk_version: "17"
+sonarqube_version: "10.0.0.68432"
+sonarqube_web_port: 9000
+sonarqube_user: "ddsonar"
+sonarqube_group: "ddsonar"
+sonarqube_db: "ddsonarqube"
+sonarqube_db_user: "ddsonar"
+sonarqube_db_password: "mwd#2%#!!#%rgs"

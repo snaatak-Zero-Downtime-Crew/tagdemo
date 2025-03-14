@@ -1,0 +1,21 @@
+- name: Create PostgreSQL user if not exists
+  become: yes
+  ansible.builtin.shell: >
+    sudo -u postgres psql -tc "SELECT 1 FROM pg_roles WHERE rolname='{{ sonarqube_db_user }}'" | grep -q 1 || 
+    sudo -u postgres psql -c "CREATE USER {{ sonarqube_db_user }} WITH ENCRYPTED PASSWORD '{{ sonarqube_db_password }}';"
+  changed_when: false
+
+- name: Ensure PostgreSQL user password is updated
+  ansible.builtin.command: >
+      sudo -u postgres psql -c "ALTER USER {{ sonarqube_db_user }} WITH ENCRYPTED PASSWORD '{{ sonarqube_db_password }}';"
+
+- name: Create PostgreSQL database if not exists
+  become: yes
+  ansible.builtin.shell: >
+    sudo -u postgres psql -tc "SELECT 1 FROM pg_database WHERE datname='{{ sonarqube_db }}'" | grep -q 1 || 
+    sudo -u postgres psql -c "CREATE DATABASE {{ sonarqube_db }} OWNER {{ sonarqube_db_user }};"
+  changed_when: false
+
+- name: Grant all privileges on database to user
+  ansible.builtin.command: >
+    sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE {{ sonarqube_db }} TO {{ sonarqube_db_user }};"
