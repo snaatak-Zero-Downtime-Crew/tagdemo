@@ -75,4 +75,4 @@ This role was created by **[Aayush verma ]**. For any inquiries or issues, pleas
 
 ---
 
-This template includes a basic setup for SonarQube using Ansible. You can expand on it based on your environment and requirements (e.g., different database types or additional configuration).3
+This template includes a basic setup for SonarQube using Ansible. You can expand on it based on your environment and requirements (e.g., different database types or additional configuration).
