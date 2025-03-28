@@ -1,38 +1,78 @@
-Role Name
-=========
+# SonarQube Setup Role
 
-A brief description of the role goes here.
+This Ansible role installs and configures **SonarQube** on a target machine. SonarQube is a popular open-source platform used for continuous inspection of code quality. It performs automatic reviews of code to detect bugs, vulnerabilities, and code smells in your codebase.
 
-Requirements
-------------
+## Requirements
 
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
+- This role requires **Java** (at least version 11) to be installed on the target machine, as SonarQube is built on Java.
+- If you are setting up SonarQube to run as a service, you may need to configure additional system settings (e.g., firewall, system user) which are outside the scope of this role.
 
-Role Variables
---------------
+## Role Variables
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
+The following variables can be defined for customizing your SonarQube installation:
 
-Dependencies
-------------
+### `sonarqube_version`
+- Default: `latest`
+- The version of SonarQube to install. You can specify a specific version or use `latest` to always get the newest stable release.
 
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
+### `sonarqube_install_dir`
+- Default: `/opt/sonarqube`
+- The directory where SonarQube will be installed.
 
-Example Playbook
-----------------
+### `sonarqube_user`
+- Default: `sonar`
+- The system user that will be used to run the SonarQube service.
 
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
+### `sonarqube_group`
+- Default: `sonar`
+- The system group to assign ownership to.
 
-    - hosts: servers
-      roles:
-         - { role: username.rolename, x: 42 }
+### `sonarqube_service_enabled`
+- Default: `true`
+- Whether to configure SonarQube as a system service to start automatically on boot.
 
-License
--------
+### `sonarqube_db_url`
+- Default: `jdbc:postgresql://localhost:5432/sonar`
+- The JDBC URL for the PostgreSQL database used by SonarQube. You can change this to suit your database configuration.
 
-BSD
+### `sonarqube_db_username`
+- Default: `sonar`
+- The username for connecting to the SonarQube database.
 
-Author Information
-------------------
+### `sonarqube_db_password`
+- Default: `sonar`
+- The password for the SonarQube database user.
 
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).
+## Dependencies
+
+`postgresql`: If you are using PostgreSQL as the database for SonarQube, the postgresql role should be installed.
+
+`java`: You need a Java role or task to install OpenJDK 11 or later on the target machine.
+
+## Example Playbook
+
+Here is an example playbook that installs and configures SonarQube:
+
+```yaml
+- hosts: all
+  become: true
+  vars:
+    sonarqube_version: "9.9.0.65466"  # Specify your preferred version
+    sonarqube_db_url: "jdbc:postgresql://localhost:5432/sonar"
+    sonarqube_db_username: "sonar"
+    sonarqube_db_password: "sonar"
+
+  roles:
+    - { role: sonarqube, sonarqube_service_enabled: true }
+```
+
+This will install SonarQube, configure it with the specified database settings, and set it up as a service.
+
+
+## Author Information
+
+This role was created by **[Aayush verma ]**. For any inquiries or issues, please reach out at **[aayush.verma@mygurukulam.co]**.
+
+---
+
+This template includes a basic setup for SonarQube using Ansible. You can expand on it based on your environment and requirements (e.g., different database types or additional configuration).3
