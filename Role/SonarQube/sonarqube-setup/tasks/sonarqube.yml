@@ -1,22 +1,22 @@
 - name: Download SonarQube zip file
-  get_url:
+  ansible.builtin.get_url::
     url: "{{ sonarqube_download_url }}"
     dest: "/tmp/sonarqube-{{ sonarqube_version }}.zip"
     mode: '0644'
 
 - name: Extract SonarQube directly to /opt/
-  unarchive:
+  ansible.builtin.unarchive::
     src: "/tmp/sonarqube-{{ sonarqube_version }}.zip"
     dest: "/opt/"
     remote_src: yes
 
 - name: Create group '{{ sonarqube_group }}'
-  group:
+  ansible.builtin.group::
     name: "{{ sonarqube_group }}"
     state: present
 
 - name: Create user '{{ sonarqube_user }}'
-  user:
+  ansible.builtin.user::
     name: "{{ sonarqube_user }}"
     group: "{{ sonarqube_group }}"
     home: "{{ sonarqube_install_dir }}"
@@ -24,19 +24,19 @@
     state: present
     
 - name: Change ownership of SonarQube directory
-  file:
+  ansible.builtin.file:
     path: "{{ sonarqube_install_dir }}"
     owner: "{{ sonarqube_user }}"
     group: "{{ sonarqube_group }}"
     recurse: yes
 
 - name: Configure SonarQube
-  template:
+  ansible.builtin.template:
     src: sonarqube.conf.j2
     dest: "{{ sonarqube_install_dir }}/conf/sonar.properties"
 
 - name: Create SonarQube service file
-  template:
+  ansible.builtin.template:
     src: sonarqube.service.j2
     dest: "/etc/systemd/system/{{ sonarqube_service_name }}.service"
   notify: 
@@ -44,7 +44,7 @@
   - Restart SonarQube
   
 - name: Append sysctl configuration
-  blockinfile:
+  ansible.builtin.blockinfile:
     path: /etc/sysctl.conf
     block: "{{ sysctl_config | join('\n') }}"
     state: present
