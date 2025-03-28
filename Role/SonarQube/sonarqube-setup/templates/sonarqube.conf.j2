@@ -1,6 +1,6 @@
 # SonarQube configuration file
 
-sonar.jdbc.url=jdbc:postgresql://localhost:5432/{{ sonarqube_db }}
+sonar.jdbc.url=jdbc:postgresql://{{ sonarqube_db_host }}:{{ sonarqube_db_port }}/{{ sonarqube_db_name }}
 sonar.jdbc.username={{ sonarqube_db_user }}
 sonar.jdbc.password={{ sonarqube_db_password }}
 
